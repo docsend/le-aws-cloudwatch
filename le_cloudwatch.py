@@ -50,7 +50,8 @@ def lambda_handler(event, context):
         try:
             send_to_le(json.dumps(log_event['extractedFields']), sock, log_token)
         except KeyError:
-            send_to_le(log_event['message'], sock, log_token)
+            for line in log_event['message'].split('\n'):
+                send_to_le(line, sock, log_token)
 
     # Send debug info re end of stream
     for token in tokens:
